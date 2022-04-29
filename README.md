@@ -120,8 +120,7 @@ This takes some time. Be patient
 ❯ docker compose up
 WARN[0000] Found orphan containers ([airflow-ha-mariadb-106-airflow-worker-1 airflow-ha-mariadb-106-airflow-scheduler-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
 [+] Running 10/0
- ⠿ Container airflow-ha-mariadb-106-airflow-worker-1-1     Created                     0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-worker-2-1     Created                     0.1s
+ ⠿ Container airflow-ha-mariadb-106-airflow-worker-1       Created                     0.1s
  ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-1-1  Created                     0.1s
  ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-2-1  Created                     0.1s
  ⠿ Container airflow-ha-mariadb-106-flower-1               Created                     0.0s
@@ -134,10 +133,9 @@ WARN[0000] Found orphan containers ([airflow-ha-mariadb-106-airflow-worker-1 air
 
 ```
 ❯ docker ps --format "{{.Names}}"
-airflow-ha-mariadb-106-airflow-worker-1-1
+airflow-ha-mariadb-106-airflow-worker-1
 airflow-ha-mariadb-106-airflow-scheduler-1-1
 airflow-ha-mariadb-106-airflow-scheduler-2-1
-airflow-ha-mariadb-106-airflow-worker-2-1
 airflow-ha-mariadb-106-flower-1
 airflow-ha-mariadb-106-redis-1
 airflow-ha-mariadb-106-airflow-triggerer-1
