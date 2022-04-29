@@ -38,7 +38,28 @@ services:
     ports:
       - "3306:3306"
 ```
+4. set two schedulers with `AIRFLOW__SCHEDULER__USE_ROW_LEVEL_LOCKING=True` (FYI, it is already set to `True` by default)
+```
+  airflow-scheduler-1:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
 
+  airflow-scheduler-2:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
+```
 ## Setting the right Airflow user
 
 On Linux, the quick-start needs to know your host user id and needs to have group id set to 0. Otherwise the files created in dags, logs and plugins will be created with root user. You have to make sure to configure them for the docker-compose:
@@ -92,38 +113,39 @@ The account created has the login airflow and the password airflow.
 
 
 ## docker compose up
+
+This takes some time. Be patient
+
 ```
 ❯ docker compose up
-[+] Running 8/0
- ⠿ Container airflow-ha-mariadb-106-airflow-webserver-1  Created                           0.1s
- ⠿ Container airflow-ha-mariadb-106-flower-1             Created                           0.1s
- ⠿ Container airflow-ha-mariadb-106-redis-1              Created                           0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-worker-1     Created                           0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-1  Created                           0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-triggerer-1  Created                           0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-init-1       Created                           0.0s
- ⠿ Container airflow-ha-mariadb-106-mariadb-1            Running                           0.0s
-Attaching to airflow-ha-mariadb-106-airflow-init-1, airflow-ha-mariadb-106-airflow-scheduler-1, airflow-ha-mariadb-106-airflow-triggerer-1, airflow-ha-mariadb-106-airflow-webserver-1, airflow-ha-mariadb-106-airflow-worker-1, airflow-ha-mariadb-106-flower-1, airflow-ha-mariadb-106-mariadb-1, airflow-ha-mariadb-106-redis-1
-...
-...
-airflow-ha-mariadb-106-airflow-webserver-1  |   ____________       _____________
-airflow-ha-mariadb-106-airflow-webserver-1  |  ____    |__( )_________  __/__  /________      __
-airflow-ha-mariadb-106-airflow-webserver-1  | ____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
-airflow-ha-mariadb-106-airflow-webserver-1  | ___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
-airflow-ha-mariadb-106-airflow-webserver-1  |  _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
-airflow-ha-mariadb-106-airflow-webserver-1  | [2022-04-29 01:38:34,869] {dagbag.py:500} INFO - Filling up the DagBag from /dev/null
-airflow-ha-mariadb-106-flower-1             | [2022-04-29 01:38:37,619] {command.py:154} INFO - Visit me at http://0.0.0.0:5555
-airflow-ha-mariadb-106-flower-1             | [2022-04-29 01:38:37,888] {command.py:159} INFO - Broker: redis://redis:6379/0
-...
-...
-airflow-ha-mariadb-106-airflow-webserver-1  | 127.0.0.1 - - [29/Apr/2022:01:40:52 +0000] "GET /health HTTP/1.1" 200 159 "-" "curl/7.64.0"
-airflow-ha-mariadb-106-airflow-webserver-1  | 127.0.0.1 - - [29/Apr/2022:01:40:52 +0000] "GET /health HTTP/1.1" 200 159 "-" "curl/7.64.0"
-airflow-ha-mariadb-106-airflow-webserver-1  | 127.0.0.1 - - [29/Apr/2022:01:40:52 +0000] "GET /health HTTP/1.1" 200 159 "-" "curl/7.64.0"
-...
-...
+WARN[0000] Found orphan containers ([airflow-ha-mariadb-106-airflow-worker-1 airflow-ha-mariadb-106-airflow-scheduler-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
+[+] Running 10/0
+ ⠿ Container airflow-ha-mariadb-106-airflow-worker-1-1     Created                     0.1s
+ ⠿ Container airflow-ha-mariadb-106-airflow-worker-2-1     Created                     0.1s
+ ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-1-1  Created                     0.1s
+ ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-2-1  Created                     0.1s
+ ⠿ Container airflow-ha-mariadb-106-flower-1               Created                     0.0s
+ ⠿ Container airflow-ha-mariadb-106-mariadb-1              Running                     0.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-init-1         Created                     0.0s
+ ⠿ Container airflow-ha-mariadb-106-redis-1                Created                     0.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-triggerer-1    Created                     0.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-webserver-1    Created                     0.0s
 ```
 
+```
+❯ docker ps --format "{{.Names}}"
+airflow-ha-mariadb-106-airflow-worker-1-1
+airflow-ha-mariadb-106-airflow-scheduler-1-1
+airflow-ha-mariadb-106-airflow-scheduler-2-1
+airflow-ha-mariadb-106-airflow-worker-2-1
+airflow-ha-mariadb-106-flower-1
+airflow-ha-mariadb-106-redis-1
+airflow-ha-mariadb-106-airflow-triggerer-1
+airflow-ha-mariadb-106-airflow-webserver-1
+airflow-ha-mariadb-106-mariadb-1
+
+```
 ## Login `local:8080` -> Username: `airflow`, Password: `airflow`
+
 ![Screenshot](images/airflow(1).png)
 
-![Screenshot](images/airflow(2).png)

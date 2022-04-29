@@ -64,7 +64,7 @@ services:
     restart: always
 
 
-  airflow-scheduler:
+  airflow-scheduler-1:
     <<: *airflow-common
     command: scheduler
     healthcheck:
@@ -74,8 +74,34 @@ services:
       retries: 5
     restart: always
 
+  airflow-scheduler-2:
+    <<: *airflow-common
+    command: scheduler
+    healthcheck:
+      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    restart: always
 
-  airflow-worker:
+  airflow-worker-1:
+    <<: *airflow-common
+    command: celery worker
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - 'celery --app airflow.executors.celery_executor.app inspect ping -d "celery@$${HOSTNAME}"'
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    environment:
+      <<: *airflow-common-env
+      # Required to handle warm shutdown of the celery workers properly
+      # See https://airflow.apache.org/docs/docker-stack/entrypoint.html#signal-propagation
+      DUMB_INIT_SETSID: "0"
+    restart: always
+
+  airflow-worker-2:
     <<: *airflow-common
     command: celery worker
     healthcheck:
