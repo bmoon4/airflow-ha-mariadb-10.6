@@ -1,0 +1,124 @@
+[2022-04-29 01:57:10,501] {processor.py:163} INFO - Started process (PID=373) to work on /home/airflow/.local/lib/python3.7/site-packages/airflow/example_dags/example_python_operator.py
+[2022-04-29 01:57:10,509] {processor.py:642} INFO - Processing file /home/airflow/.local/lib/python3.7/site-packages/airflow/example_dags/example_python_operator.py for tasks to queue
+[2022-04-29 01:57:10,524] {logging_mixin.py:109} INFO - [2022-04-29 01:57:10,524] {dagbag.py:500} INFO - Filling up the DagBag from /home/airflow/.local/lib/python3.7/site-packages/airflow/example_dags/example_python_operator.py
+[2022-04-29 01:57:10,742] {processor.py:652} INFO - DAG(s) dict_keys(['example_python_operator']) retrieved from /home/airflow/.local/lib/python3.7/site-packages/airflow/example_dags/example_python_operator.py
+[2022-04-29 01:57:18,319] {logging_mixin.py:109} INFO - [2022-04-29 01:57:18,319] {process_utils.py:237} INFO - Waiting up to 5 seconds for processes to exit...
+[2022-04-29 01:57:18,336] {logging_mixin.py:109} INFO - [2022-04-29 01:57:18,324] {base.py:706} ERROR - Exception during reset or similar
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/_common.py", line 441, in wrapper
+    ret = self._cache[fun]
+AttributeError: _cache
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/utils/session.py", line 31, in create_session
+    yield session
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/utils/session.py", line 70, in wrapper
+    return func(*args, session=session, **kwargs)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 608, in sync_to_db
+    for attempt in run_with_db_retries(logger=self.log):
+  File "/home/airflow/.local/lib/python3.7/site-packages/tenacity/__init__.py", line 382, in __iter__
+    do = self.iter(retry_state=retry_state)
+  File "/home/airflow/.local/lib/python3.7/site-packages/tenacity/__init__.py", line 349, in iter
+    return fut.result()
+  File "/usr/local/lib/python3.7/concurrent/futures/_base.py", line 428, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.7/concurrent/futures/_base.py", line 384, in __get_result
+    raise self._exception
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 620, in sync_to_db
+    serialize_errors.extend(_serialize_dag_capturing_errors(dag, session))
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 597, in _serialize_dag_capturing_errors
+    self._sync_perm_for_dag(dag, session=session)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/utils/session.py", line 67, in wrapper
+    return func(*args, **kwargs)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/models/dagbag.py", line 633, in _sync_perm_for_dag
+    from flask_appbuilder.security.sqla import models as sqla_models
+  File "/home/airflow/.local/lib/python3.7/site-packages/flask_appbuilder/security/sqla/models.py", line 58, in <module>
+    class Role(Model):
+  File "/home/airflow/.local/lib/python3.7/site-packages/flask_sqlalchemy/model.py", line 67, in __init__
+    super(NameMetaMixin, cls).__init__(name, bases, d)
+  File "/home/airflow/.local/lib/python3.7/site-packages/flask_sqlalchemy/model.py", line 121, in __init__
+    super(BindMetaMixin, cls).__init__(name, bases, d)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/ext/declarative/api.py", line 76, in __init__
+    _as_declarative(cls, classname, cls.__dict__)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/ext/declarative/base.py", line 131, in _as_declarative
+    _MapperConfig.setup_mapping(cls, classname, dict_)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/ext/declarative/base.py", line 160, in setup_mapping
+    cfg_cls(cls_, classname, dict_)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/ext/declarative/base.py", line 194, in __init__
+    self._early_mapping()
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/ext/declarative/base.py", line 199, in _early_mapping
+    self.map()
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/ext/declarative/base.py", line 696, in map
+    self.cls, self.local_table, **self.mapper_args
+  File "<string>", line 2, in mapper
+  File "<string>", line 2, in __init__
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/util/deprecations.py", line 139, in warned
+    return fn(*args, **kwargs)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/orm/mapper.py", line 723, in __init__
+    self._configure_pks()
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/orm/mapper.py", line 1457, in _configure_pks
+    self._log("Identified primary key columns: %s", primary_key)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/orm/mapper.py", line 2013, in _log
+    self.logger.info("%s " + msg, *((self._log_desc,) + args))
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/orm/mapper.py", line 2009, in _log_desc
+    + ")"
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/dag_processing/manager.py", line 501, in _exit_gracefully
+    self.end()
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/dag_processing/manager.py", line 1182, in end
+    kill_child_processes_by_pids(pids_to_kill)
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/utils/process_utils.py", line 224, in kill_child_processes_by_pids
+    this_process = psutil.Process(os.getpid())
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/__init__.py", line 332, in __init__
+    self._init(pid)
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/__init__.py", line 361, in _init
+    self.create_time()
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/__init__.py", line 717, in create_time
+    self._create_time = self._proc.create_time()
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/_pslinux.py", line 1661, in wrapper
+    return fun(self, *args, **kwargs)
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/_pslinux.py", line 1873, in create_time
+    ctime = float(self._parse_stat_file()['create_time'])
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/_pslinux.py", line 1661, in wrapper
+    return fun(self, *args, **kwargs)
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/_common.py", line 444, in wrapper
+    return fun(self)
+  File "/home/airflow/.local/lib/python3.7/site-packages/psutil/_pslinux.py", line 1703, in _parse_stat_file
+    with open_binary("%s/%s/stat" % (self._procfs_path, self.pid)) as f:
+  File "/home/airflow/.local/lib/python3.7/site-packages/airflow/dag_processing/manager.py", line 503, in _exit_gracefully
+    sys.exit(os.EX_OK)
+SystemExit: 0
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 749, in _rollback_impl
+    self.engine.dialect.do_rollback(self.connection)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/dialects/mysql/base.py", line 2513, in do_rollback
+    dbapi_connection.rollback()
+MySQLdb._exceptions.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/pool/base.py", line 697, in _finalize_fairy
+    fairy._reset(pool)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/pool/base.py", line 891, in _reset
+    self._reset_agent.rollback()
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1751, in rollback
+    self._do_rollback()
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1789, in _do_rollback
+    self.connection._rollback_impl()
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 751, in _rollback_impl
+    self._handle_dbapi_exception(e, None, None, None, None)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 1511, in _handle_dbapi_exception
+    sqlalchemy_exception, with_traceback=exc_info[2], from_=e
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/util/compat.py", line 182, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/engine/base.py", line 749, in _rollback_impl
+    self.engine.dialect.do_rollback(self.connection)
+  File "/home/airflow/.local/lib/python3.7/site-packages/sqlalchemy/dialects/mysql/base.py", line 2513, in do_rollback
+    dbapi_connection.rollback()
+sqlalchemy.exc.OperationalError: (MySQLdb._exceptions.OperationalError) (2013, 'Lost connection to MySQL server during query')
+(Background on this error at: http://sqlalche.me/e/13/e3q8)
