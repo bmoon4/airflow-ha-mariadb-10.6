@@ -180,3 +180,19 @@ airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,
 airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,342] {scheduler_job.py:1212} INFO - Resetting orphaned tasks for active dag runs
 airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,367] {settings.py:55} INFO - Configured default timezone Timezone('UTC')
 ```
+
+
+## Run an example dag
+
+### example_bash_operator
+
+![Screenshot](images/airflow(2).png)
+
+
+### Scheduler-1
+
+![Screenshot](images/scheduler-1.png)
+
+### Scheduler-2
+
+![Screenshot](images/scheduler-2.png)
