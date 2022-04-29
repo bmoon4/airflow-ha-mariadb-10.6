@@ -192,7 +192,8 @@ airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,
 ### Scheduler-1
 
 ![Screenshot](images/scheduler-1.png)
-
+![Screenshot](images/scheduler-1-log.png)
 ### Scheduler-2
 
 ![Screenshot](images/scheduler-2.png)
+![Screenshot](images/scheduler-2-log.png)
