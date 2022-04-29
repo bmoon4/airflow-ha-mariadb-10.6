@@ -184,7 +184,7 @@ airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,
 
 ## Run an example dag
 
-### example_bash_operator
+### example_python_operator
 
 ![Screenshot](images/airflow(2).png)
 
