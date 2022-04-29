@@ -124,3 +124,59 @@ airflow-ha-mariadb-106-mariadb-1
 
 ![Screenshot](images/airflow(1).png)
 
+
+## Scale up scheduler (1 -> 2)
+```
+❯ docker-compose up --scale airflow-scheduler=2
+[+] Running 9/9
+ ⠿ Container airflow-ha-mariadb-106-airflow-triggerer-1  Running                               0.0s
+ ⠿ Container airflow-ha-mariadb-106-mariadb-1            Running                               0.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-worker-1     Running                               0.0s
+ ⠿ Container airflow-ha-mariadb-106-flower-1             Running                               0.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-webserver-1  Running                               0.0s
+ ⠿ Container airflow-ha-mariadb-106-redis-1              Running                               0.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-2  Created                               0.1s
+ ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-1  Recreated                             3.0s
+ ⠿ Container airflow-ha-mariadb-106-airflow-init-1       Created                               0.0s
+Attaching to airflow-ha-mariadb-106-airflow-init-1, airflow-ha-mariadb-106-airflow-scheduler-1, airflow-ha-mariadb-106-airflow-scheduler-2, airflow-ha-mariadb-106-airflow-triggerer-1, airflow-ha-mariadb-106-airflow-webserver-1, airflow-ha-mariadb-106-airflow-worker-1, airflow-ha-mariadb-106-flower-1, airflow-ha-mariadb-106-mariadb-1, airflow-ha-mariadb-106-redis-1
+...
+...
+
+```
+
+```
+❯ docker ps --format "{{.Names}}"
+airflow-ha-mariadb-106-airflow-scheduler-1
+airflow-ha-mariadb-106-airflow-scheduler-2  <----- newly added
+airflow-ha-mariadb-106-airflow-webserver-1
+airflow-ha-mariadb-106-flower-1
+airflow-ha-mariadb-106-airflow-worker-1
+airflow-ha-mariadb-106-airflow-triggerer-1
+airflow-ha-mariadb-106-redis-1
+airflow-ha-mariadb-106-mariadb-1
+```
+
+```
+airflow-ha-mariadb-106-airflow-scheduler-1               |   ____________       _____________
+airflow-ha-mariadb-106-airflow-scheduler-1               |  ____    |__( )_________  __/__  /________      __
+airflow-ha-mariadb-106-airflow-scheduler-1               | ____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
+airflow-ha-mariadb-106-airflow-scheduler-1               | ___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
+airflow-ha-mariadb-106-airflow-scheduler-1               |  _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
+airflow-ha-mariadb-106-airflow-scheduler-1               | [2022-04-29 04:00:14,533] {scheduler_job.py:694} INFO - Starting the scheduler
+airflow-ha-mariadb-106-airflow-scheduler-1               | [2022-04-29 04:00:14,535] {scheduler_job.py:699} INFO - Processing each file at most -1 times
+airflow-ha-mariadb-106-airflow-scheduler-1               | [2022-04-29 04:00:17,095] {manager.py:163} INFO - Launched DagFileProcessorManager with pid: 176
+airflow-ha-mariadb-106-airflow-scheduler-1               | [2022-04-29 04:00:17,120] {scheduler_job.py:1212} INFO - Resetting orphaned tasks for active dag runs
+airflow-ha-mariadb-106-airflow-scheduler-1               | [2022-04-29 04:00:17,178] {settings.py:55} INFO - Configured default timezone Timezone('UTC')
+...
+...
+airflow-ha-mariadb-106-airflow-scheduler-2               |   ____________       _____________
+airflow-ha-mariadb-106-airflow-scheduler-2               |  ____    |__( )_________  __/__  /________      __
+airflow-ha-mariadb-106-airflow-scheduler-2               | ____  /| |_  /__  ___/_  /_ __  /_  __ \_ | /| / /
+airflow-ha-mariadb-106-airflow-scheduler-2               | ___  ___ |  / _  /   _  __/ _  / / /_/ /_ |/ |/ /
+airflow-ha-mariadb-106-airflow-scheduler-2               |  _/_/  |_/_/  /_/    /_/    /_/  \____/____/|__/
+airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:18,962] {scheduler_job.py:694} INFO - Starting the scheduler
+airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:18,964] {scheduler_job.py:699} INFO - Processing each file at most -1 times
+airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,339] {manager.py:163} INFO - Launched DagFileProcessorManager with pid: 171
+airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,342] {scheduler_job.py:1212} INFO - Resetting orphaned tasks for active dag runs
+airflow-ha-mariadb-106-airflow-scheduler-2               | [2022-04-29 04:00:21,367] {settings.py:55} INFO - Configured default timezone Timezone('UTC')
+```
