@@ -38,28 +38,7 @@ services:
     ports:
       - "3306:3306"
 ```
-4. set two schedulers with `AIRFLOW__SCHEDULER__USE_ROW_LEVEL_LOCKING=True` (FYI, it is already set to `True` by default)
-```
-  airflow-scheduler-1:
-    <<: *airflow-common
-    command: scheduler
-    healthcheck:
-      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    restart: always
 
-  airflow-scheduler-2:
-    <<: *airflow-common
-    command: scheduler
-    healthcheck:
-      test: ["CMD-SHELL", 'airflow jobs check --job-type SchedulerJob --hostname "$${HOSTNAME}"']
-      interval: 10s
-      timeout: 10s
-      retries: 5
-    restart: always
-```
 ## Setting the right Airflow user
 
 On Linux, the quick-start needs to know your host user id and needs to have group id set to 0. Otherwise the files created in dags, logs and plugins will be created with root user. You have to make sure to configure them for the docker-compose:
@@ -121,8 +100,7 @@ This takes some time. Be patient
 WARN[0000] Found orphan containers ([airflow-ha-mariadb-106-airflow-worker-1 airflow-ha-mariadb-106-airflow-scheduler-1]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up.
 [+] Running 10/0
  ⠿ Container airflow-ha-mariadb-106-airflow-worker-1       Created                     0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-1-1  Created                     0.1s
- ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-2-1  Created                     0.1s
+ ⠿ Container airflow-ha-mariadb-106-airflow-scheduler-1    Created                     0.1s
  ⠿ Container airflow-ha-mariadb-106-flower-1               Created                     0.0s
  ⠿ Container airflow-ha-mariadb-106-mariadb-1              Running                     0.0s
  ⠿ Container airflow-ha-mariadb-106-airflow-init-1         Created                     0.0s
@@ -134,8 +112,7 @@ WARN[0000] Found orphan containers ([airflow-ha-mariadb-106-airflow-worker-1 air
 ```
 ❯ docker ps --format "{{.Names}}"
 airflow-ha-mariadb-106-airflow-worker-1
-airflow-ha-mariadb-106-airflow-scheduler-1-1
-airflow-ha-mariadb-106-airflow-scheduler-2-1
+airflow-ha-mariadb-106-airflow-scheduler-1
 airflow-ha-mariadb-106-flower-1
 airflow-ha-mariadb-106-redis-1
 airflow-ha-mariadb-106-airflow-triggerer-1
